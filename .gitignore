@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# model weight
+src/data/datasets/raw/vllm-0.10.1
+
 # Distribution / packaging
 .Python
 build/
