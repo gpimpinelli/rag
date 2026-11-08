@@ -17,7 +17,7 @@ from src.models import (
 )
 
 from src import take_json
-from .rag_orchestrator import RagOrchestrator
+from .orchestrator import RagOrchestrator
 
 if TYPE_CHECKING:
     from .answer_generator import AnswerGenerator

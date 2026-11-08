@@ -19,7 +19,7 @@ from src.models import (
 from src.rag.answer_generator import NO_CONTEXT_REPLY, build_context
 from src.rag.chunking import chunk_md, chunk_py
 from src.rag.rag_cli import IOU_THRESHOLD, RagCLI, _iou
-from src.rag.rag_orchestrator import RagOrchestrator
+from src.rag.orchestrator import RagOrchestrator
 from src.rag.tokenizer import tokenize
 
 
