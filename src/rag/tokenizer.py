@@ -12,19 +12,53 @@ import re
 # COSTANTI E FILTRI
 # ==============================================================================
 
-STOPWORDS: frozenset[str] = frozenset({
-    "the", "and", "for", "are", "but", "not", "you", "all", "any", "can",
-    "was", "has", "have", "this", "that", "with", "from", "they", "will",
-    "would", "there", "their", "what", "when", "which", "who", "how",
-    "why", "where", "does", "did", "its", "into", "than", "then", "them",
-    "these", "those", "also", "been", "being", "were", "your", "about",
-    "some", "such", "only", "other", "more", "most", "should", "could",
-    "is", "of", "to", "in", "or", "if", "it", "as", "on", "by", "be",
-    "an", "at", "we", "do", "no", "so", "up",
+_ENGLISH: frozenset[str] = frozenset({
+    "a", "about", "above", "after", "again", "against", "also", "am", "an",
+    "are", "at",
+    "be", "because", "been", "before", "being", "below", "between", "both",
+    "but", "by",
+    "can", "could",
+    "did", "do", "does", "doing", "down", "during",
+    "each",
+    "few", "further",
+    "had", "has", "have", "having", "he", "her", "here", "hers", "herself",
+    "him", "himself", "his", "how",
+    "i", "into", "it", "its", "itself",
+    "just",
+    "may", "me", "might", "more", "most", "must", "my", "myself",
+    "of", "on", "once", "only", "other", "our", "ours", "ourselves", "over",
+    "own",
+    "same", "she", "should", "so", "some", "such",
+    "than", "that", "the", "their", "theirs", "them", "themselves", "then",
+    "there", "these", "they", "this", "those", "through", "to", "too",
+    "under", "until", "up",
+    "very",
+    "was", "we", "were", "what", "when", "where", "which", "who", "whom",
+    "why", "will", "would",
+    "you", "your", "yours", "yourself", "yourselves",
 })
 
+_CONTRACTIONS: frozenset[str] = frozenset({
+    "s", "t", "d", "ll", "m", "re", "ve", "don", "doesn", "isn", "aren",
+    "wasn", "weren", "can", "couldn", "shouldn", "won", "wouldn",
+})
+
+_QUESTION_WORDS: frozenset[str] = frozenset({
+    "describe", "explain", "tell",
+})
+
+_KEYWORD_LIKE: frozenset[str] = frozenset({
+    "and", "as", "for", "in", "is", "or", "with",
+})
+
+_USAGE: frozenset[str] = frozenset({
+    "use", "used", "uses", "using",
+})
+
+STOPWORDS: frozenset[str] = (_ENGLISH | _CONTRACTIONS | _QUESTION_WORDS
+                             | _KEYWORD_LIKE | _USAGE)
+
 MIN_LEN = 2        # Lunghezza minima di un token intero (es. "if" viene scartato, "for" no, ma "for" è stopword)
-MIN_PART_LEN = 3   # Lunghezza minima di un sotto-pezzo estratto da snake/camel (es. "id" in "user_id" viene scartato)
 MAX_LEN = 40       # Soglia di rumore: stringhe più lunghe sono hash, base64 o dati binari
 
 # ==============================================================================
@@ -111,7 +145,7 @@ def tokenize(text: str) -> list[str]:
        ne valuta la validità tramite `_keep` (usando MIN_LEN) e la salva.
     4. Se la parola è composta (es. "user_id"): 
        salva la parola INTERA ripulita dagli underscore (doppio binario).
-       salva in aggiunta tutti i SINGOLI FRAMMENTI estratti se superano il MIN_PART_LEN.
+       salva in aggiunta tutti i SINGOLI FRAMMENTI estratti se superano il MIN_LEN.
     
     Variabili interne principali:
     - tokens (list[str]): L'accumulatore finale della sequenza di parole valide (con possibili ripetizioni).
@@ -143,13 +177,13 @@ def tokenize(text: str) -> list[str]:
             continue
             
         # Caso 2: Identificatore composto, logica a "doppio binario" (es. "HTTPServer")
-        whole = word.lower().strip("_")
+        whole = word.lower().replace("-", "_").strip("_")
         
         # Aggiunge la parola per intero (es. "httpserver")
         if _keep(whole, MIN_LEN):
             tokens.append(whole)
             
         # Aggiunge anche i frammenti separati (es. "http", "server")
-        tokens.extend(p for p in parts if _keep(p, MIN_PART_LEN))
+        tokens.extend(p for p in parts if _keep(p, MIN_LEN))
         
     return tokens
