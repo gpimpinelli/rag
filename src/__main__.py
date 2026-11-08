@@ -1,6 +1,5 @@
-import fire
-import sys
-
+from rag import RagCLI
 
 if __name__ == "__main__":
-    argv = sys.argv
+    import fire
+    fire.Fire(RagCLI)
