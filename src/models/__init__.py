@@ -15,5 +15,5 @@ __all__ = [
     "MinimalAnswer",
     "RagDataset",
     "StudentSearchResults",
-    "StudentSearchResultsAndAnswer"
+    "StudentSearchResultsAndAnswer",
 ]
