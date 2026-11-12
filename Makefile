@@ -21,7 +21,7 @@ OUT_SEARCH_UNANS = data/output/search_results/UnansweredQuestions
 OUT_ANS_UNANS    = data/output/search_results_and_answer/UnansweredQuestions
 
 # Query di test rapido per la CLI
-QUERY ?= "How to configure OpenAI server?"
+QUERY ?= How to configure OpenAI server?
 
 .PHONY: install index search answer \
         search-ans-docs search-ans-code eval-docs eval-code eval-all \
@@ -30,7 +30,7 @@ QUERY ?= "How to configure OpenAI server?"
 
 # ==============================================================================
 # SETUP & AMBIENTE
-# ==============================================================================
+# ===============QUERY ?= How to configure OpenAI server?===============================================================
 install:
 	uv sync
 
@@ -46,13 +46,13 @@ index:
 search:
 	$(PYTHON) search \
 		--index_dir="$(INDEX_DIR)" \
-		--query=$(QUERY) \
+		--query="$(QUERY)" \
 		--k=$(K)
 
 answer:
 	$(PYTHON) answer \
 		--index_dir="$(INDEX_DIR)" \
-		--query=$(QUERY) \
+		--query="$(QUERY)" \
 		--k=5
 
 # ==============================================================================
@@ -121,6 +121,8 @@ student-all: student-answer-docs student-answer-code
 debug:
 	uv run python -m pdb -m src
 
+black: 
+	uv run python -m black src
 
 lint:
 	uv run flake8 src
