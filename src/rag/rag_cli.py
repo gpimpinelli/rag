@@ -129,7 +129,7 @@ class RagCLI:
             return
         results = self._load().search(str(query), top_k=k)
         if not results:
-            print("Nessun risultato.")
+            print("No results found.")
         for src in results:
             print(
                 f"{src.file_path} [{src.first_character_index}:"
@@ -145,7 +145,7 @@ class RagCLI:
     ) -> None:
         """Cerca per tutte le domande e salva uno StudentSearchResults."""
         if k <= 0:
-            print("Error: k deve essere maggiore di zero")
+            print("Error: k must be greater than zero")
             return
         dataset = RagDataset.model_validate(take_json(dataset_path))
         rag = self._load()
@@ -174,17 +174,17 @@ class RagCLI:
     def answer(self, query: str, k: int = 5) -> None:
         """Risponde a una singola query stampando fonti e testo generato."""
         if not str(query).strip():
-            print("Error: la query e' vuota")
+            print("Error: Query is empty")
             return
         if k <= 0:
-            print("Error: k deve essere maggiore di zero")
+            print("Error: k must be greater than zero")
             return
 
         # 1. Recupero delle fonti tramite l'indice
         rag = self._load()
         sources = rag.search(str(query), top_k=k)
         if not sources:
-            print("Nessuna fonte trovata per la query.")
+            print("No results found for this query.")
             return
 
         # 3. Generazione della risposta con il modello LLM
@@ -288,7 +288,9 @@ class RagCLI:
         ]
 
         if not answered:
-            print("Error: il dataset non contiene fonti di riferimento")
+            print(
+                "Error: The dataset does not contain any reference sources."
+            )
             return
         print("Evaluation Results\n" + "=" * 40)
         for kk in (1, 3, 5, 10):

@@ -54,8 +54,8 @@ def build_context(
             if src.file_path not in cache:
                 cache[src.file_path] = take_txt(Path(src.file_path))
         except (OSError, UnicodeError):
+            # Ignora i file senza far crashare il sistema
             continue
-        # Ignora i file illeggibili senza far crashare il sistema
 
         # Slicing preciso basato sugli indici salvati
         chunk = cache[src.file_path][

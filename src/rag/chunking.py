@@ -80,11 +80,12 @@ def _chunk_tiers(
     max_chunk_size: int = 2000,
     min_chunk_size: int = 100,
 ) -> list[tuple[int, int]]:
-    """Motore puro a finestra scorrevole con merge sicuro dei micro-chunk.
+    """Gestisce la finestra scorrevole con merge sicuro dei micro-chunk.
 
     Logica dell'algoritmo:
     1. Calcola i chunk ideali procedendo in avanti e tagliando sul confine
        più severo possibile senza superare `max_chunk_size`.
+
     2. Esegue una passata iterativa per fondere i "micro-chunk" (frammenti
        troppo corti che distruggerebbero il calcolo dell'IoU). La fusione
        avviene SOLO se la somma delle lunghezze non supera il limite massimo,
@@ -100,9 +101,7 @@ def _chunk_tiers(
     start = 0
     content_len = len(file_content)
 
-    # ========================================================================
     # 1. TAGLIO A FINESTRA SCORREVOLE
-    # ========================================================================
     while start < content_len:
         # Se il testo rimanente entra tutto nella finestra, chiudiamo
         if content_len - start <= max_chunk_size:
@@ -124,9 +123,8 @@ def _chunk_tiers(
         chunks.append((start, end))
         start = end
 
-    # ========================================================================
     # 2. MERGE SICURO DEI MICRO-CHUNK
-    # ========================================================================
+
     # Continua a fondere finché ci sono cambiamenti, controllando il limite.
     changed = True
     while changed:
