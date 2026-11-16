@@ -101,6 +101,17 @@ To achieve sub-millisecond retrieval throughput, the `score()` method uses Spars
 
 ## 8. Instructions & Example Usage
 
+### Environment Setup (42 Cluster / Disk Quota)
+
+If you are working in an environment with strict home directory storage limits (such as the 42 cluster), redirect `uv` caches, virtual environments, and Hugging Face model weights to `/goinfre` **before** running `make install` or any `uv` commands:
+
+```bash
+export UV_CACHE_DIR=/goinfre/$USER/uv_cache
+export HF_HOME=/goinfre/$USER/hf_cache
+export UV_LINK_MODE=copy
+export UV_PROJECT_ENVIRONMENT=/goinfre/$USER/rag_venv
+```
+
 ### Prerequisites & Installation
 
 Ensure you have Python 3.10+ and `uv` installed.
