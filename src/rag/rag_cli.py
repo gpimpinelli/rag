@@ -71,10 +71,6 @@ class RagCLI:
     ) -> None:
         """Parametri globali (prima del comando), es. ``--bm25_k1 1.5``.
 
-        I nomi iniziano con ``bm25_`` di proposito: un parametro chiamato
-        ``k1`` intercetterebbe il flag ``--k`` dei comandi (Fire accetta i
-        prefissi), lasciando ``k`` al valore di default.
-
         Il costruttore e' volutamente leggero: Fire lo esegue a ogni
         comando, quindi l'indice viene caricato solo quando serve.
 
