@@ -24,7 +24,8 @@ if TYPE_CHECKING:
 
 IOU_THRESHOLD = 0.05
 
-DEFAULT_SAVE_DIRECTORY = (
+DEFAULT_SEARCH_DIR = "data/output/search_results/UnansweredQuestions"
+DEFAULT_ANSWER_DIR = (
     "data/output/search_results_and_answer/UnansweredQuestions"
 )
 
@@ -137,7 +138,7 @@ class RagCLI:
         self,
         dataset_path: str,
         k: int = 10,
-        save_directory: str = DEFAULT_SAVE_DIRECTORY,
+        save_directory: str = DEFAULT_SEARCH_DIR,
     ) -> None:
         """Cerca per tutte le domande e salva uno StudentSearchResults."""
         if k <= 0:
@@ -204,7 +205,7 @@ class RagCLI:
     def answer_dataset(
         self,
         student_search_results_path: str,
-        save_directory: str = DEFAULT_SAVE_DIRECTORY,
+        save_directory: str = DEFAULT_ANSWER_DIR,
     ) -> None:
         """
         Genera le risposte per un dataset partendo
